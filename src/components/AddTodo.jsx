@@ -1,7 +1,8 @@
 import { useState } from "react"
+import useTodo from "../hooks/useTodo"
 
-/* eslint-disable react/prop-types */
-function AddTodo({ addTodo }) {
+const AddTodo = () => {
+  const { addTodo } = useTodo()
   const [todo, setTodo] = useState("")
 
   const handleAdd = () => {
@@ -17,7 +18,7 @@ function AddTodo({ addTodo }) {
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
       />
-      <button onClick={() => handleAdd(todo)}>Add todo</button>
+      <button onClick={handleAdd}>Add todo</button>
     </>
   )
 }

@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-function TodoItem({ todo, styles, toggleCompleted }) {
+const TodoItem = ({ todo, styles, toggleCompleted }) => {
   return (
     <li>
       <input

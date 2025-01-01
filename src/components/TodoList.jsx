@@ -1,8 +1,9 @@
 import TodoItem from "./TodoItem"
+import useTodo from "../hooks/useTodo"
 
-/* eslint-disable react/prop-types */
+const TodoList = () => {
+  const { todoList, toggleCompleted } = useTodo()
 
-function TodoList({ toggleCompleted, todoList }) {
   return (
     <ul>
       {todoList.map((item) => {
