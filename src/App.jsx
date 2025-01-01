@@ -1,48 +1,40 @@
 import { useEffect, useState } from "react"
-import TodoList from "./TodoList"
+import TodoList from "./components/TodoList"
 import "./index.css"
-import AddTodo from "./AddTodo"
+import AddTodo from "./components/AddTodo"
 
 function App() {
-  const [todo, setTodo] = useState("")
-  const [todoList, setTodoList] = useState(
-    () => JSON.parse(localStorage.getItem("todos")) || []
-  )
-
-  // add todos to the local storage
+  const [todoList, setTodoList] = useState(() => {
+    const localTodos = localStorage.getItem("todos")
+    return localTodos ? JSON.parse(localTodos) : []
+  })
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todoList))
   }, [todoList])
 
-  /* a single todo should be an object of id, todo and iscompleted. 
-  [{
-    id: number,
-    todo: string,
-    iscompleted: false,
-  }]
-  */
-
-  const handleAddTodo = () => {
-    console.log("todo: ", todo)
+  const handleAddTodo = (newTodo) => {
+    console.log("new todo: ", newTodo)
     console.log("todolist: ", todoList)
+    setTodoList([
+      ...todoList,
+      { id: crypto.randomUUID(), completed: false, todo: newTodo },
+    ])
+  }
 
-    if (todo && !todoList.some((item) => item.todo === todo)) {
-      const newItem = {
-        id: crypto.randomUUID(),
-        todo: todo,
-        isCompleted: false,
-      }
-      setTodoList([...todoList, newItem])
-    }
-    setTodo("")
+  const toggleCompleted = (todo) => {
+    setTodoList(
+      todoList.map((item) =>
+        item.todo === todo ? { ...item, completed: !item.completed } : item
+      )
+    )
   }
 
   return (
     <main>
       <h1>React Todo List App</h1>
-      <TodoList todoList={todoList} setTodoList={setTodoList} />
-      <AddTodo todo={todo} setTodo={setTodo} onHandle={handleAddTodo} />
+      <TodoList toggleCompleted={toggleCompleted} todoList={todoList} />
+      <AddTodo addTodo={handleAddTodo} />
     </main>
   )
 }
